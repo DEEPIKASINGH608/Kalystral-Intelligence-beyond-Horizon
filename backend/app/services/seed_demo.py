@@ -1,0 +1,177 @@
+from sqlalchemy.orm import Session
+from app.models.maritime import CorridorRouteDemo, DischargePort, VesselProfile
+
+
+def seed_demo_maritime_data(db: Session) -> None:
+    if db.query(DischargePort).count() == 0:
+        ports = [
+            DischargePort(
+                code="INPRT",
+                name="Paradip Port",
+                state="Odisha",
+                max_draft_m=17.1,
+                max_loa_m=300.0,
+                berth_congestion_index=0.42,
+                avg_waiting_days=1.8,
+                weather_risk_level="MODERATE",
+                primary_commodities="Thermal Coal, Coking Coal, Iron Ore Pellets",
+                is_demo_data=True,
+            ),
+            DischargePort(
+                code="INVTZ",
+                name="Visakhapatnam Port",
+                state="Andhra Pradesh",
+                max_draft_m=18.1,
+                max_loa_m=305.0,
+                berth_congestion_index=0.31,
+                avg_waiting_days=1.2,
+                weather_risk_level="LOW",
+                primary_commodities="Coking Coal, Manganese Ore, Limestone",
+                is_demo_data=True,
+            ),
+            DischargePort(
+                code="INDMR",
+                name="Dhamra Port",
+                state="Odisha",
+                max_draft_m=18.0,
+                max_loa_m=315.0,
+                berth_congestion_index=0.28,
+                avg_waiting_days=1.0,
+                weather_risk_level="MODERATE",
+                primary_commodities="Steam Coal, Coking Coal, Fluxes",
+                is_demo_data=True,
+            ),
+            DischargePort(
+                code="INHAL",
+                name="Haldia Dock Complex",
+                state="West Bengal",
+                max_draft_m=8.3,
+                max_loa_m=230.0,
+                berth_congestion_index=0.68,
+                avg_waiting_days=3.4,
+                weather_risk_level="ELEVATED",
+                primary_commodities="Coking Coal, Petcoke, Fertilizer Raw Materials",
+                is_demo_data=True,
+            ),
+            DischargePort(
+                code="INKRI",
+                name="Krishnapatnam Port",
+                state="Andhra Pradesh",
+                max_draft_m=18.5,
+                max_loa_m=330.0,
+                berth_congestion_index=0.24,
+                avg_waiting_days=0.9,
+                weather_risk_level="LOW",
+                primary_commodities="Thermal Coal, Gypsum, Iron Ore",
+                is_demo_data=True,
+            ),
+        ]
+        db.add_all(ports)
+
+    if db.query(VesselProfile).count() == 0:
+        vessels = [
+            VesselProfile(
+                vessel_code="DEMO-CAPE-01",
+                vessel_name="MV Kalinga Horizon (Demo)",
+                segment="Capesize",
+                dwt_mt=176500,
+                laden_draft_m=17.8,
+                loa_m=292.0,
+                daily_hire_usd=21800.0,
+                fuel_consumption_tpd=46.5,
+                is_demo_data=True,
+            ),
+            VesselProfile(
+                vessel_code="DEMO-KAMS-02",
+                vessel_name="MV Coromandel Star (Demo)",
+                segment="Kamsarmax",
+                dwt_mt=82100,
+                laden_draft_m=14.4,
+                loa_m=229.0,
+                daily_hire_usd=15400.0,
+                fuel_consumption_tpd=29.0,
+                is_demo_data=True,
+            ),
+            VesselProfile(
+                vessel_code="DEMO-ULT-03",
+                vessel_name="MV Bay Odyssey (Demo)",
+                segment="Ultramax",
+                dwt_mt=63400,
+                laden_draft_m=13.3,
+                loa_m=199.9,
+                daily_hire_usd=13900.0,
+                fuel_consumption_tpd=25.2,
+                is_demo_data=True,
+            ),
+            VesselProfile(
+                vessel_code="DEMO-SUP-04",
+                vessel_name="MV Hooghly Tide (Demo)",
+                segment="Supramax",
+                dwt_mt=56800,
+                laden_draft_m=12.6,
+                loa_m=190.0,
+                daily_hire_usd=12300.0,
+                fuel_consumption_tpd=23.5,
+                is_demo_data=True,
+            ),
+        ]
+        db.add_all(vessels)
+
+    if db.query(CorridorRouteDemo).count() == 0:
+        routes = [
+            CorridorRouteDemo(
+                route_code="ZARB-INPRT",
+                origin_port="Richards Bay",
+                origin_country="South Africa",
+                destination_port_code="INPRT",
+                commodity="Thermal Coal",
+                distance_nm=4520,
+                typical_parcel_mt=150000,
+                current_demo_rate_usd_mt=14.85,
+                rate_7d_delta_pct=3.4,
+                recommended_vessel_segment="Capesize",
+                is_demo_data=True,
+            ),
+            CorridorRouteDemo(
+                route_code="AUNCL-INDMR",
+                origin_port="Newcastle",
+                origin_country="Australia",
+                destination_port_code="INDMR",
+                commodity="Coking Coal",
+                distance_nm=5410,
+                typical_parcel_mt=78000,
+                current_demo_rate_usd_mt=18.40,
+                rate_7d_delta_pct=-1.2,
+                recommended_vessel_segment="Kamsarmax",
+                is_demo_data=True,
+            ),
+            CorridorRouteDemo(
+                route_code="IDSRI-INVTZ",
+                origin_port="Samarinda",
+                origin_country="Indonesia",
+                destination_port_code="INVTZ",
+                commodity="Steam Coal",
+                distance_nm=2380,
+                typical_parcel_mt=60000,
+                current_demo_rate_usd_mt=10.65,
+                rate_7d_delta_pct=2.1,
+                recommended_vessel_segment="Ultramax",
+                is_demo_data=True,
+            ),
+            CorridorRouteDemo(
+                route_code="AUPHE-INKRI",
+                origin_port="Port Hedland",
+                origin_country="Australia",
+                destination_port_code="INKRI",
+                commodity="Iron Ore / Limestone",
+                distance_nm=3690,
+                typical_parcel_mt=160000,
+                current_demo_rate_usd_mt=12.90,
+                rate_7d_delta_pct=0.8,
+                recommended_vessel_segment="Capesize",
+                is_demo_data=True,
+            ),
+        ]
+        db.add_all(routes)
+
+    db.commit()

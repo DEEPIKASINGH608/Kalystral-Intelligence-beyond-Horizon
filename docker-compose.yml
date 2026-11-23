@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: kalystral-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kalystral
+      POSTGRES_PASSWORD: kalystral_dev_password
+      POSTGRES_DB: kalystral_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - kalystral_pgdata:/var/lib/postgresql/data
+
+volumes:
+  kalystral_pgdata:
