@@ -14,3 +14,10 @@ def check_database_connection() -> str:
         return "connected"
     except Exception:
         return "unreachable"
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

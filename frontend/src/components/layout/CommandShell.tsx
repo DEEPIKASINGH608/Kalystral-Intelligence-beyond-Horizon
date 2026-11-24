@@ -1,77 +1,124 @@
-import React from "react";
-import { Compass, Anchor, ShieldAlert, Cpu, History } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Compass, Anchor, ShieldAlert, Cpu, History, LogOut } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 interface CommandShellProps {
   children: React.ReactNode;
 }
 
 const navItems = [
-  { label: "Command Bridge", icon: Compass, active: true, phase: "P1" },
-  { label: "Rate Forecast", icon: Cpu, active: false, phase: "P3" },
-  { label: "Vessel & Port Fit", icon: Anchor, active: false, phase: "P4" },
-  { label: "Weather & Congestion", icon: ShieldAlert, active: false, phase: "P3" },
-  { label: "Decision Vault", icon: History, active: false, phase: "P5" },
+  { label: "Command Bridge", to: "/", icon: Compass, active: true, phase: "P2" },
+  { label: "Rate Forecast", to: "/forecast", icon: Cpu, active: true, phase: "P3" },
+  { label: "Weather & Congestion", to: "/risk", icon: ShieldAlert, active: true, phase: "P3" },
+  { label: "Decision Vault", to: "/decisions", icon: History, active: false, phase: "P5" },
+  { label: "Vessel & Port Fit", to: "/optimize", icon: Anchor, active: true, phase: "P4" },
 ];
 
-export const CommandShell: React.FC<CommandShellProps> = ({ children }) => {
+export function CommandShell({ children }: CommandShellProps) {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  };
+
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row text-slate-100">
-      <aside className="w-full lg:w-68 bg-navy-900/90 border-b lg:border-b-0 lg:border-r border-cyan-500/15 backdrop-blur-xl p-5 flex flex-col justify-between">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-slate-950 text-slate-100">
+      <aside className="w-full lg:w-72 lg:shrink-0 bg-slate-900/95 border-b lg:border-b-0 lg:border-r border-slate-800 p-5 flex flex-col justify-between">
         <div>
-          <div className="flex items-center gap-3 pb-6 border-b border-slate-800/80">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-              <Compass className="h-5 w-5 text-navy-950 stroke-[2.25]" />
+          <div className="flex items-center gap-3 pb-5 border-b border-slate-800">
+            <div className="h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center shadow-md shadow-cyan-500/20">
+              <Compass className="h-5 w-5 text-slate-950 stroke-[2.25]" />
             </div>
-            <div>
-              <h1 className="font-display font-bold tracking-wider text-lg text-white">
+            <div className="min-w-0">
+              <h1 className="font-bold tracking-wider text-base text-white truncate">
                 KALYSTRAL
               </h1>
-              <p className="text-[11px] text-cyan-400/90 tracking-wide">
+              <p className="text-xs text-cyan-400 truncate">
                 Intelligence Beyond the Horizon.
               </p>
             </div>
           </div>
 
-          <nav className="mt-6 space-y-1.5">
+          <nav className="mt-5 space-y-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
+              if (!item.active) {
+                return (
+                  <div
+                    key={item.label}
+                    className="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm text-slate-500 bg-slate-900/40 border border-slate-800/60 cursor-not-allowed"
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <Icon className="h-4 w-4 text-slate-500 shrink-0" />
+                      <span>{item.label}</span>
+                    </span>
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-500 border border-slate-800">
+                      {item.phase}
+                    </span>
+                  </div>
+                );
+              }
+
               return (
-                <div
-                  key={item.label}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm transition-colors ${
-                    item.active
-                      ? "bg-cyan-500/10 text-cyan-300 border border-cyan-500/30"
-                      : "text-slate-400 hover:bg-navy-800/60 cursor-not-allowed opacity-70"
-                  }`}
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-cyan-500/15 text-cyan-300 border border-cyan-500/30"
+                        : "text-slate-300 hover:bg-slate-800 border border-transparent"
+                    }`
+                  }
                 >
-                  <span className="flex items-center gap-2.5 font-medium">
-                    <Icon className="h-4 w-4 text-cyan-400" />
-                    {item.label}
+                  <span className="flex items-center gap-2.5">
+                    <Icon className="h-4 w-4 text-cyan-400 shrink-0" />
+                    <span>{item.label}</span>
                   </span>
-                  <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-navy-950 text-slate-400 border border-slate-800">
+                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-950 text-cyan-300 border border-cyan-500/20">
                     {item.phase}
                   </span>
-                </div>
+                </NavLink>
               );
             })}
           </nav>
         </div>
 
-        <div className="mt-8 pt-4 border-t border-slate-800/80 text-xs text-slate-400 space-y-1">
-          <div className="flex items-center justify-between">
-            <span>Corridor Focus</span>
-            <span className="font-mono text-teal-400">ECI Bulk</span>
+        <div className="mt-8 pt-4 border-t border-slate-800 text-xs text-slate-400 space-y-3">
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between gap-2">
+              <span>Corridor Focus</span>
+              <span className="font-mono text-teal-400">ECI Bulk</span>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <span>Operator</span>
+              <span className="font-mono text-slate-200 truncate max-w-[150px]">
+                {user?.email || "Authenticated"}
+              </span>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <span>Team</span>
+              <span className="text-slate-300">Rizzalytics</span>
+            </div>
           </div>
-          <div className="flex items-center justify-between">
-            <span>Team</span>
-            <span className="text-slate-300 font-medium">Rizzalytics</span>
-          </div>
+
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="w-full py-2 px-3 rounded-lg bg-slate-950 hover:bg-rose-500/15 border border-slate-800 hover:border-rose-500/40 text-slate-300 hover:text-rose-200 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            <span>Sign Out</span>
+          </button>
         </div>
       </aside>
 
-      <main className="flex-1 p-6 lg:p-10 max-w-7xl mx-auto w-full">
-        {children}
+      <main className="flex-1 min-w-0 p-6 lg:p-8">
+        <div className="max-w-6xl mx-auto w-full">{children}</div>
       </main>
     </div>
   );
-};
+}

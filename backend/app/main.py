@@ -7,6 +7,8 @@ from app.models import maritime  # noqa: F401
 from app.services.seed_demo import seed_demo_maritime_data
 from app.api.v1.health import router as health_router
 from app.api.v1.corridor import router as corridor_router
+from app.api.v1.endpoints.forecast import router as forecast_router
+from app.api.v1.endpoints.optimize import router as optimize_router
 
 
 @asynccontextmanager
@@ -19,7 +21,7 @@ async def lifespan(app: FastAPI):
         finally:
             db.close()
     except Exception:
-        # Allow API startup even if DB is temporarily unreachable
+        
         pass
     yield
 
@@ -41,6 +43,8 @@ app.add_middleware(
 
 app.include_router(health_router, prefix=settings.API_V1_PREFIX)
 app.include_router(corridor_router, prefix=settings.API_V1_PREFIX)
+app.include_router(forecast_router, prefix=settings.API_V1_PREFIX)
+app.include_router(optimize_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")
@@ -49,6 +53,5 @@ def root():
         "platform": "KALYSTRAL",
         "tagline": "Intelligence Beyond the Horizon.",
         "team": "Rizzalytics",
-        "event": "PRASUNEX INNOVATHON 2026",
         "docs": "/docs",
     }

@@ -4,6 +4,9 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { CommandShell } from "./components/layout/CommandShell";
 import { AuthPage } from "./pages/AuthPage";
 import { OverviewPage } from "./pages/OverviewPage";
+import { RateForecastPage } from "./pages/RateForecastPage";
+import { RiskPage } from "./pages/RiskPage";
+import { VesselPortFitPage } from "./pages/VesselPortFitPage";
 
 export function App() {
   return (
@@ -17,6 +20,36 @@ export function App() {
               <ProtectedRoute>
                 <CommandShell>
                   <OverviewPage />
+                </CommandShell>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/forecast"
+            element={
+              <ProtectedRoute>
+                <CommandShell>
+                  <RateForecastPage />
+                </CommandShell>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/risk"
+            element={
+              <ProtectedRoute>
+                <CommandShell>
+                  <RiskPage />
+                </CommandShell>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/optimize"
+            element={
+              <ProtectedRoute>
+                <CommandShell>
+                  <VesselPortFitPage />
                 </CommandShell>
               </ProtectedRoute>
             }
