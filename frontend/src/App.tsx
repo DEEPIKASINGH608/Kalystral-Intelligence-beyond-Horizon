@@ -7,6 +7,8 @@ import { OverviewPage } from "./pages/OverviewPage";
 import { RateForecastPage } from "./pages/RateForecastPage";
 import { RiskPage } from "./pages/RiskPage";
 import { VesselPortFitPage } from "./pages/VesselPortFitPage";
+import { DecisionVaultPage } from "./pages/DecisionVaultPage";
+
 
 export function App() {
   return (
@@ -54,6 +56,18 @@ export function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/vault"
+            element={
+              <ProtectedRoute>
+                <CommandShell>
+                  <DecisionVaultPage />
+                </CommandShell>
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

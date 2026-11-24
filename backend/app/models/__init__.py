@@ -1,0 +1,1 @@
+from app.models.decision import CharterDecision  # noqa: F401

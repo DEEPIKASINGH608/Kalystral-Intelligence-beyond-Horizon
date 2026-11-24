@@ -10,7 +10,7 @@ const navItems = [
   { label: "Command Bridge", to: "/", icon: Compass, active: true, phase: "P2" },
   { label: "Rate Forecast", to: "/forecast", icon: Cpu, active: true, phase: "P3" },
   { label: "Weather & Congestion", to: "/risk", icon: ShieldAlert, active: true, phase: "P3" },
-  { label: "Decision Vault", to: "/decisions", icon: History, active: false, phase: "P5" },
+  { label: "Decision Vault", to: "/vault", icon: History, active: true, phase: "P5" },
   { label: "Vessel & Port Fit", to: "/optimize", icon: Anchor, active: true, phase: "P4" },
 ];
 
